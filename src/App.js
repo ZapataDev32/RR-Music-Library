@@ -4,10 +4,12 @@ import Gallery from './components/Gallery'
 import SearchBar from './components/SearchBar'
 import { createResource as fetchData } from './helper'
 import Spinner from './spinner';
+import { DataContext } from './context/DataContext'
 import { SearchContext } from './context/SearchContext'
 
 function App() {
-  let [searchTerm, setSearchTerm] = useState('')
+  let searchInput = useRef('')
+  // let [searchTerm, setSearchTerm] = useState('')
   let [data, setData] = useState([])
   let [message, setMessage] = useState('Search for Music!')
 
