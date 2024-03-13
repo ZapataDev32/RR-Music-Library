@@ -22,6 +22,7 @@ function App() {
       }
     })
     .catch(err => setMessage('An Error has Occurred!'))
+    
   }
 
   return (
