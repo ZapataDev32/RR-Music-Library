@@ -1,7 +1,10 @@
 import './App.css';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import Gallery from './components/Gallery'
 import SearchBar from './components/SearchBar'
+import { createResource as fetchData } from './helper'
+import Spinner from './spinner';
+import { SearchContext } from './context/SearchContext'
 
 function App() {
   let [searchTerm, setSearchTerm] = useState('')
