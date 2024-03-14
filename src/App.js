@@ -5,43 +5,24 @@ import SearchBar from './components/SearchBar'
 import { createResource as fetchData } from './helper'
 import Spinner from './spinner';
 import { DataContext } from './context/DataContext'
-import { SearchContext } from './context/SearchContext'
+// import { SearchContext } from './context/SearchContext'
 
 function App() {
-  let searchInput = useRef('')
-  // let [searchTerm, setSearchTerm] = useState('')
-  let [data, setData] = useState([])
+  let [searchTerm, setSearchTerm] = useState('')
+  let [data, setData] = useState(null)
+  // eslint-disable-next-line
   let [message, setMessage] = useState('Search for Music!')
 
   useEffect(() => {
     if (searchTerm) {
-      document.title=`${searchTerm} Music`
-      const fetchData = async () => {
-        const response = await fetch(`https://itunes.apple.com/search?term=${searchTerm}`)
-        const resData = await response.json()
-        if(resData.results.length > 0) {
-          setData(resData.results)
-        } else {
-          setMessage('Not Found')
-        }
-      }
-      fetchData()
-  }
-  }, [searchTerm])
+        setData(fetchData(searchTerm))
+    }
+}, [searchTerm])
+
 
   const handleSearch = (e, term) => {
     e.preventDefault()
-    fetch(`https://itunes.apple.com/search?term=${term}`)
-    .then(response => response.json())
-    .then(resData => {
-      if (resData.results.length > 0) {
-        return setData(resData.results)
-      } else {
-        return setMessage('Not Found.')
-      }
-    })
-    .catch(err => setMessage('An Error has Occurred!'))
-    
+    setSearchTerm(term)
   }
 
   const renderGallery = () => {
@@ -56,14 +37,19 @@ function App() {
 
   return (
     <div className="App">
-      <SearchContext.Provider value={{term: searchInput, handleSearch: handleSearch}}>
+      <SearchBar handleSearch={handleSearch} />
+      {renderGallery()}
+      {/* <SearchContext.Provider value={{term: searchInput, handleSearch: handleSearch}}>
         <SearchBar />
-      </SearchContext.Provider>
+      </SearchContext.Provider> */}
       {message}
-      <Gallery data={data} />
+      <DataContext.Provider value={data}>
+        <Gallery />
+      </DataContext.Provider>
     </div>
   );
 }
+
 
 
 export default App;
